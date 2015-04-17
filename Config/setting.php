@@ -22,6 +22,4 @@ App::build(array(
 	'Routing/Filter' => array( dirname(__FILE__) . DS . '..' . DS . 'Routing' . DS . 'Filter' . DS )
 ), App::PREPEND);
 
-$dump = App::paths();
-
 include dirname(__FILE__) . DS .'themes.php';
