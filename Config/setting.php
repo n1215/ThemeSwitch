@@ -17,11 +17,11 @@ $config['BcApp.adminNavi.theme_switch'] = array(
 	)
 );
 
-App::build(
-	array(
-		'View/Helper' => array( dirname(__FILE__) . DS . '..' . DS . 'View' . DS . 'Helper' . DS ),
-		'Routing/Filter' => array( dirname(__FILE__) . DS . '..' . DS . 'Routing' . DS . 'Filter' . DS )
-	)
-);
+App::build(array(
+	'View/Helper' => array( dirname(__FILE__) . DS . '..' . DS . 'View' . DS . 'Helper' . DS ),
+	'Routing/Filter' => array( dirname(__FILE__) . DS . '..' . DS . 'Routing' . DS . 'Filter' . DS )
+), App::PREPEND);
+
+$dump = App::paths();
 
 include dirname(__FILE__) . DS .'themes.php';

@@ -66,7 +66,7 @@ class BcCacheHelper extends CacheHelper {
 
 		if ($agent !== null) {
 			$postfix = $agent->name;
-			$path = $path . '_theme-switch_' . $postfix;
+			$path = $path . '_theme_switch_' . $postfix;
 		}
 		// <<<
 

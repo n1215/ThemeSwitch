@@ -1,5 +1,6 @@
 <?php
 
+App::uses('ThemeSwitch', 'ThemeSwitch.Model');
 /**
  * [ThemeSwitch]ThemeSwitchコントローライベントリスナー
  *
@@ -36,17 +37,12 @@ class ThemeSwitchControllerEventListener extends BcControllerEventListener {
 			return;
 		}
 
-		if (ClassRegistry::isKeySet('ThemeSwitch.ThemeSwitch')) {
-			$ThemeSwitch = ClassRegistry::getObject('ThemeSwitch.ThemeSwitch');
-		} else {
-			$ThemeSwitch = ClassRegistry::init('ThemeSwitch.ThemeSwitch');
-		}
+		$themeSwitch = ThemeSwitch::createFromContext();
 
-		$theme = $ThemeSwitch->getThemeName();
+		$theme = $themeSwitch->getThemeName();
 
 		if ($theme !== null) {
 			$controller->theme = $theme;
 		}
 	}
-
 }

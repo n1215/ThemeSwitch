@@ -13,18 +13,35 @@
 class ThemeSwitch {
 
 /**
- * クラス名
- *
- * @var string
+ * テーマ設定の配列
+ * @var array
  */
-	public $name = 'ThemeSwitch';
+	protected $themes;
+
+/**
+ * ユーザーエージェント
+ * @var BcAgent
+ */
+	protected $agent;
+
+/**
+ * 現在のコンテクストから生成
+ *
+ * @return self
+ */
+	public static function createFromContext() {
+		return new self(Configure::read('ThemeSwitch.themes'), BcAgent::findCurrent());
+	}
 
 /**
  * コンストラクタ
+ *
+ * @param array $themes テーマ設定の配列
+ * @param BcAgent $agent ユーザーエージェント
  */
-	public function __construct() {
-		$this->themes = Configure::read('ThemeSwitch.themes');
-		$this->agent = BcAgent::findCurrent();
+	public function __construct(array $themes, BcAgent $agent = null) {
+		$this->themes = $themes;
+		$this->agent = $agent;
 	}
 
 /**

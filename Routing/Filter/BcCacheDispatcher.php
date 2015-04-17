@@ -26,7 +26,7 @@ class BcCacheDispatcher extends DispatcherFilter {
  *
  * @var int
  */
-	public $priority = 10;
+	public $priority = 8;
 
 /**
  * Checks whether the response was cached and set the body accordingly.
@@ -59,21 +59,36 @@ class BcCacheDispatcher extends DispatcherFilter {
 		}
 
 		// CUSTOMIZE ADD 2015/04/17 n1215
+		// UA判定用の文字列を後置
 		// >>>
 		$agent = BcAgent::findCurrent();
 
 		if ($agent !== null) {
-			$postfix = $agent->name;
-			$path = $path . '_theme-switch_' . $postfix;
+			$suffix = '_theme_switch_' . $agent->name;
+		} else {
+			$suffix = '';
 		}
 		// <<<
 
 		$path = strtolower(Inflector::slug($path));
 
-		$filename = CACHE . 'views' . DS . $path . '.php';
+		// CUSTOMIZE MODIFY 2015/04/17 n1215
+		// UA判定用の文字列を後置
+		// >>>
+		// $filename = CACHE . 'views' . DS . $path . '.php';
+		// ---
+		$filename = CACHE . 'views' . DS . $path . $suffix . '.php';
+		// <<<
 
 		if (!file_exists($filename)) {
-			$filename = CACHE . 'views' . DS . $path . '_index.php';
+
+			// CUSTOMIZE MODIFY 2015/04/17 n1215
+			// UA判定用の文字列を後置
+			// >>>
+			// $filename = CACHE . 'views' . DS . $path . '_index.php';
+			// ---
+			$filename = CACHE . 'views' . DS . $path . '_index' . $suffix . '.php';
+			// <<<
 		}
 		if (file_exists($filename)) {
 			$controller = null;
