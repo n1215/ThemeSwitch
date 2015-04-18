@@ -1,7 +1,6 @@
 <?php
-
 /**
- * [ThemeSwitch]テーマスイッチコンフィグコントローラー
+ * [ThemeSwitch]テーマスイッチコントローラ
  *
  * @copyright Copyright 2015 - , n1215
  * @link       http://github.com/n1215
@@ -10,6 +9,7 @@
  * @version    0.5.0
  * @license    MIT License
  */
+
 class ThemeSwitchController extends BcPluginAppController {
 
 /**
@@ -29,14 +29,14 @@ class ThemeSwitchController extends BcPluginAppController {
 /**
  * サブメニューエレメント
  *
- * @var    array
+ * @var array
  */
 	public $subMenuElements = array('theme_switch');
 
 /**
  * パンくずナビ
  *
- * @var string
+ * @var array
  */
 	public $crumbs = array(
 		array('name' => 'プラグイン管理', 'url' => array('plugin' => '', 'controller' => 'plugins', 'action' => 'index')),

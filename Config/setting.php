@@ -1,5 +1,4 @@
 <?php
-
 /**
  * [ThemeSwitch]テーマスイッチのシステムナビ
  *
@@ -10,6 +9,7 @@
  * @version    0.5.0
  * @license    MIT License
  */
+
 $config['BcApp.adminNavi.theme_switch'] = array(
 	'name' => 'テーマスイッチプラグイン',
 	'contents' => array(

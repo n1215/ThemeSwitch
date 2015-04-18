@@ -1,8 +1,6 @@
 <?php
-
-App::uses('ThemeSwitch', 'ThemeSwitch.Model');
 /**
- * [ThemeSwitch]ThemeSwitchコントローライベントリスナー
+ * [ThemeSwitch]テーマスイッチコントローライベントリスナ
  *
  * @copyright Copyright 2015 - , n1215
  * @link       http://github.com/n1215
@@ -11,6 +9,9 @@ App::uses('ThemeSwitch', 'ThemeSwitch.Model');
  * @version    0.5.0
  * @license    MIT License
  */
+
+App::uses('ThemeSwitch', 'ThemeSwitch.Model');
+
 class ThemeSwitchControllerEventListener extends BcControllerEventListener {
 
 /**

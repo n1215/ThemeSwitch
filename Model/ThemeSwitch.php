@@ -1,7 +1,4 @@
 <?php
-
-App::uses('BcAgent', 'Lib');
-
 /**
  * [ThemeSwitch]テーマスイッチ
  *
@@ -12,6 +9,9 @@ App::uses('BcAgent', 'Lib');
  * @version    0.5.0
  * @license    MIT License
  */
+
+App::uses('BcAgent', 'Lib');
+
 class ThemeSwitch {
 
 /**

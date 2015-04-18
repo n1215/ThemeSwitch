@@ -12,8 +12,11 @@
  * @license			http://basercms.net/license/index.html
  */
 
+// CUSTOMIZE ADD 2015/04/18 n1215
+// >>>
 App::uses('CacheHelper', 'View/Helper');
 App::uses('ThemeSwitch', 'ThemeSwitch.Model');
+// <<<
 
 /**
  * CacheHelper helps create full page view caching.
@@ -67,7 +70,7 @@ class BcCacheHelper extends CacheHelper {
 			$path = $prefix . '_' . $path;
 		}
 
-		// CUSTOMIZE ADD 2015/04/17 n1215
+		// CUSTOMIZE ADD 2015/04/18 n1215
 		// >>>
 		$themeSwitch = ThemeSwitch::createFromContext();
 		$path .= $themeSwitch->cacheSuffix();

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * [ThemeSwitch]テーマスイッチインストーラ
  *
@@ -10,4 +9,3 @@
  * @version    0.5.0
  * @license    MIT License
  */
-

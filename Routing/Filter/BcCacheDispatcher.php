@@ -12,8 +12,11 @@
  * @license			http://basercms.net/license/index.html
  */
 
+// CUSTOMIZE ADD 2015/04/18 n1215
+// >>>
 App::uses('DispatcherFilter', 'Routing');
 App::uses('ThemeSwitch', 'ThemeSwitch.Model');
+// <<<
 
 /**
  * This filter will check whether the response was previously cached in the file system
@@ -27,8 +30,13 @@ class BcCacheDispatcher extends DispatcherFilter {
  *
  * @var int
  */
+	// CUSTOMIZE MODIFY 2015/04/18 n1215
+    // CacheDispatcherより優先度を上げる
+	// >>>
+	// public $priority = 10;
+	// ---
 	public $priority = 8;
-
+	// <<<
 /**
  * Checks whether the response was cached and set the body accordingly.
  *
