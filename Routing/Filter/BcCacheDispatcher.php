@@ -13,6 +13,7 @@
  */
 
 App::uses('DispatcherFilter', 'Routing');
+App::uses('ThemeSwitch', 'ThemeSwitch.Model');
 
 /**
  * This filter will check whether the response was previously cached in the file system
@@ -51,23 +52,24 @@ class BcCacheDispatcher extends DispatcherFilter {
 		// <<<
 
 		if ($path === '/') {
-			$path = 'home';
+			// CUSTOMIZE MODIFY 2015/04/18 n1215
+			// >>>
+			// $path = 'home';
+			// ---
+			$path = 'index';
+			// <<<
 		}
+
 		$prefix = Configure::read('Cache.viewPrefix');
 		if ($prefix) {
 			$path = $prefix . '_' . $path;
 		}
 
-		// CUSTOMIZE ADD 2015/04/17 n1215
+		// CUSTOMIZE ADD 2015/04/18 n1215
 		// UA判定用の文字列を後置
 		// >>>
-		$agent = BcAgent::findCurrent();
-
-		if ($agent !== null) {
-			$suffix = '_theme_switch_' . $agent->name;
-		} else {
-			$suffix = '';
-		}
+		$themeSwitch = ThemeSwitch::createFromContext();
+		$suffix = $themeSwitch->cacheSuffix();
 		// <<<
 
 		$path = strtolower(Inflector::slug($path));

@@ -1,5 +1,7 @@
 <?php
 
+App::uses('BcAgent', 'Lib');
+
 /**
  * [ThemeSwitch]テーマスイッチ
  *
@@ -55,5 +57,17 @@ class ThemeSwitch {
 		}
 
 		return $this->themes[$this->agent->name];
+	}
+
+/**
+ * キャッシュのファイル名の接尾辞を生成
+ *
+ * @return string
+ */
+	public function cacheSuffix() {
+		if ($this->agent === null) {
+			return '';
+		}
+		return '_theme_switch_' . $this->agent->name;
 	}
 }

@@ -13,6 +13,7 @@
  */
 
 App::uses('CacheHelper', 'View/Helper');
+App::uses('ThemeSwitch', 'ThemeSwitch.Model');
 
 /**
  * CacheHelper helps create full page view caching.
@@ -51,10 +52,16 @@ class BcCacheHelper extends CacheHelper {
 		// ---
 		$path = $this->request->normalizedHere();
 		// <<<
-		
+
 		if ($path === '/') {
-			$path = 'home';
+			// CUSTOMIZE MODIFY 2015/04/18 n1215
+			// >>>
+			// $path = 'home';
+			// ---
+			$path = 'index';
+			// <<<
 		}
+
 		$prefix = Configure::read('Cache.viewPrefix');
 		if ($prefix) {
 			$path = $prefix . '_' . $path;
@@ -62,12 +69,8 @@ class BcCacheHelper extends CacheHelper {
 
 		// CUSTOMIZE ADD 2015/04/17 n1215
 		// >>>
-		$agent = BcAgent::findCurrent();
-
-		if ($agent !== null) {
-			$postfix = $agent->name;
-			$path = $path . '_theme_switch_' . $postfix;
-		}
+		$themeSwitch = ThemeSwitch::createFromContext();
+		$path .= $themeSwitch->cacheSuffix();
 		// <<<
 
 		$cache = strtolower(Inflector::slug($path));
