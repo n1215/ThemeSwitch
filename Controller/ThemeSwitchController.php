@@ -6,9 +6,12 @@
  * @link       http://github.com/n1215
  * @package    n1215.bcplugins.theme_switch
  * @since      baserCMS v 3.0.7
- * @version    0.5.0
+ * @version    0.6.0
  * @license    MIT License
  */
+
+App::uses('ThemeSwitch', 'ThemeSwitch.Model');
+App::uses('ThemeSwitchConfigValidator', 'ThemeSwitch.Model');
 
 class ThemeSwitchController extends BcPluginAppController {
 
@@ -24,7 +27,7 @@ class ThemeSwitchController extends BcPluginAppController {
  *
  * @var array
  */
-	public $components = array('BcAuth');
+	public $components = array('BcAuth', 'Cookie', 'BcAuthConfigure');
 
 /**
  * サブメニューエレメント
@@ -51,6 +54,58 @@ class ThemeSwitchController extends BcPluginAppController {
  */
 	public function admin_index() {
 		$this->pageTitle = 'テーマスイッチ設定';
+		$availableThemes = ThemeSwitch::getAvailableThemes();
+		$themeList = array_combine($availableThemes, $availableThemes);
+		$themeSwitch = ThemeSwitch::createFromContext();
+
+		$this->set('currentThemes', $themeSwitch->themes);
+		$this->set('themeList', $themeList);
+		$this->set('submitUrl', Router::url(array('plugin' => 'theme_switch', 'controller' => 'theme_switch', 'action' => 'admin_ajax_config')));
+	}
+
+/**
+ * テーマスイッチの設定を更新
+ *
+ * @return string
+ * @throws HttpRequestMethodException
+ * @throws HttpInvalidParamException
+ */
+	public function admin_ajax_config() {
+		$this->autoRender = false;
+		$this->viewClass = 'json';
+
+		//Ajaxリクエストのみ
+		$this->request->onlyAllow('ajax');
+
+		//POSTリクエストのみ
+		if (!$this->request->is('post')) {
+			throw new HttpRequestMethodException();
+		}
+
+		//POSTされたJSONデータを配列で取得
+		$data = $this->request->input('json_decode', true);
+
+		if (empty($data)) {
+			throw new HttpInvalidParamException();
+		}
+
+		//バリデーション
+		$validator = ThemeSwitchConfigValidator::create();
+		$errors = $validator->validate($data);
+
+		//エラーがある場合
+		if (count($errors) !== 0) {
+			return json_encode(array('errors' => $errors));
+		}
+
+		//エラーのない場合
+		$themeSwitch = ThemeSwitch::createFromContext();
+		$themeSwitch->saveConfig($data);
+		$success = array(
+			'status' => 'success'
+		);
+
+		return json_encode($success);
 	}
 
 }

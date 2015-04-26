@@ -6,7 +6,7 @@
  * @link       http://github.com/n1215
  * @package    n1215.bcplugins.theme_switch
  * @since      baserCMS v 3.0.7
- * @version    0.5.0
+ * @version    0.6.0
  * @license    MIT License
  */
 
@@ -21,5 +21,3 @@ App::build(array(
 	'View/Helper' => array( dirname(__FILE__) . DS . '..' . DS . 'View' . DS . 'Helper' . DS ),
 	'Routing/Filter' => array( dirname(__FILE__) . DS . '..' . DS . 'Routing' . DS . 'Filter' . DS )
 ), App::PREPEND);
-
-include dirname(__FILE__) . DS .'themes.php';

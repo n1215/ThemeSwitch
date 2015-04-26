@@ -31,7 +31,7 @@ class BcCacheDispatcher extends DispatcherFilter {
  * @var int
  */
 	// CUSTOMIZE MODIFY 2015/04/18 n1215
-    // CacheDispatcherより優先度を上げる
+	// CacheDispatcherより優先度を上げる
 	// >>>
 	// public $priority = 10;
 	// ---

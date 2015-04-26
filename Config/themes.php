@@ -1,5 +1,5 @@
 <?php
-$config['ThemeSwitch.themes'] = array(
-	'smartphone' => 'nada-icons',
-	'mobile' => 'skelton',
+$config = array (
+  'smartphone' => 'nada-icons',
+  'mobile' => 'greenfield',
 );

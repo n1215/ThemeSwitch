@@ -1,5 +1,4 @@
 <?php
-
 /**
  * [ThemeSwitch]テーマスイッチファイル
  *
@@ -7,9 +6,10 @@
  * @link       http://github.com/n1215/ThemeSwitch
  * @package    n1215.bcplugins.themeswitch
  * @since      baserCMS v 3.0.7
- * @version    0.5.0
+ * @version    0.6.0
  * @license    MIT License
  */
+
 $title = 'テーマスイッチ';
 $description = 'ユーザーエージェントに応じて適用するテーマを変更する';
 $adminLink = '/admin/theme_switch/theme_switch/index';
