@@ -83,7 +83,7 @@ class ThemeSwitchController extends BcPluginAppController {
 		}
 
 		//POSTされたJSONデータを配列で取得
-		$data = $this->request->input('json_decode', true);
+		$data = $this->request->data;
 
 		if (empty($data)) {
 			throw new HttpInvalidParamException();
@@ -95,17 +95,22 @@ class ThemeSwitchController extends BcPluginAppController {
 
 		//エラーがある場合
 		if (count($errors) !== 0) {
-			return json_encode(array('errors' => $errors));
+			$this->response->statusCode(400);
+			$jsonArray = array(
+				'success' => false,
+				'errors' => $errors
+			);
+			return json_encode($jsonArray);
 		}
 
 		//エラーのない場合
 		$themeSwitch = ThemeSwitch::createFromContext();
 		$themeSwitch->saveConfig($data);
-		$success = array(
-			'status' => 'success'
+		$jsonArray = array(
+			'success' => true
 		);
 
-		return json_encode($success);
+		return json_encode($jsonArray);
 	}
 
 }

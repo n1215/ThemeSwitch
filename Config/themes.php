@@ -1,5 +1,5 @@
 <?php
 $config = array (
-  'smartphone' => 'nada-icons',
-  'mobile' => 'greenfield',
+  'smartphone' => 'logical_jp_baser',
+  'mobile' => 'nada-icons',
 );
