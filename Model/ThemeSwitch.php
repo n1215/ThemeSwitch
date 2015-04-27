@@ -6,7 +6,7 @@
  * @link       http://github.com/n1215
  * @package    n1215.bcplugins.theme_switch
  * @since      baserCMS v 3.0.7
- * @version    0.6.0
+ * @version    0.7.0
  * @license    MIT License
  */
 
@@ -39,7 +39,8 @@ class ThemeSwitch {
  * @return self
  */
 	public static function createFromContext() {
-		return new self(null, BcAgent::findCurrent(), ThemeSwitchConfig::create());
+        $config = ThemeSwitchConfig::create();
+		return new self($config->read(), BcAgent::findCurrent());
 	}
 
 /**
@@ -47,16 +48,10 @@ class ThemeSwitch {
  *
  * @param array $themes テーマ設定の配列
  * @param BcAgent $agent ユーザーエージェント
- * @param ThemeSwitchConfig $config テーマ設定
  */
-	public function __construct(array $themes = null, BcAgent $agent = null, ThemeSwitchConfig $config = null) {
-		if($config !== null && $themes === null) {
-			$this->themes = $config->read();
-		} else {
-			$this->themes = $themes;
-		}
+	public function __construct(array $themes = null, BcAgent $agent = null) {
+		$this->themes = $themes;
 		$this->agent = $agent;
-		$this->config = $config;
 	}
 
 /**
