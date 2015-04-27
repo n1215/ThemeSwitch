@@ -26,6 +26,7 @@
 	</tbody>
 </table>
 <div style="display: none;" id="theme-switch-config-submit-url"><?php echo $submitUrl ?></div>
+<div style="display: none;" id="theme-switch-config-token"><?php echo $csrfTokenKey ?></div>
 <div class="submit">
 <button class="button" id="theme-switch-config-submit">保存</button>
 </div>

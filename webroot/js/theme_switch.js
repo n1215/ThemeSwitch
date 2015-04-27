@@ -2,6 +2,7 @@
  $(function(){
     var ThemeSwitch = {
         submitUrl: $('#theme-switch-config-submit-url').html(),
+        token: $('#theme-switch-config-token').html(),
         $button: $('#theme-switch-config-submit'),
         $smartphone: $('#theme-switch-config-smartphone'),
         $mobile: $('#theme-switch-config-mobile'),
@@ -19,7 +20,8 @@
         getData: function () {
             return {
                 smartphone: this.$smartphone.val(),
-                mobile: this.$mobile.val()
+                mobile: this.$mobile.val(),
+                _Token: {key: this.token}
             };
         },
         post: function () {

@@ -47,17 +47,27 @@ class ThemeSwitchController extends BcPluginAppController {
 	);
 
 /**
+ * beforeFilter
+ *
+ * @return void
+ */
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Security->csrfCheck = true;
+        $this->Security->csrfUseOnce = false;
+    }
+
+/**
  * [ADMIN] 管理画面
  *
  * @return void
- * @access public
  */
 	public function admin_index() {
 		$this->pageTitle = 'テーマスイッチ設定';
 		$availableThemes = ThemeSwitch::getAvailableThemes();
 		$themeList = array_combine($availableThemes, $availableThemes);
 		$themeSwitch = ThemeSwitch::createFromContext();
-
+        $this->set('csrfTokenKey', $this->Session->read('_Token.key'));
 		$this->set('currentThemes', $themeSwitch->themes);
 		$this->set('themeList', $themeList);
 		$this->set('submitUrl', Router::url(array('plugin' => 'theme_switch', 'controller' => 'theme_switch', 'action' => 'admin_ajax_config')));
