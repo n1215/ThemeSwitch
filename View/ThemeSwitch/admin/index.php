@@ -30,4 +30,7 @@
 <div class="submit">
 <button class="button" id="theme-switch-config-submit">保存</button>
 </div>
+<div id="theme-switch-config-dialog" class="display-none">
+	<p>保存しました</p>
+</div>
 </div>

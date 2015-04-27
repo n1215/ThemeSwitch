@@ -17,7 +17,6 @@ App::uses('ThemeSwitchConfigValidator', 'ThemeSwitch.Model');
  */
 class ThemeSwitchConfigValidatorTest extends BaserTestCase {
 
-
 /**
  * @var ThemeSwitchConfigValidator
  */

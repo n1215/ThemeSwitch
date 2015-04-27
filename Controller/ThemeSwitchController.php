@@ -43,7 +43,6 @@ class ThemeSwitchController extends BcPluginAppController {
  */
 	public $crumbs = array(
 		array('name' => 'プラグイン管理', 'url' => array('plugin' => '', 'controller' => 'plugins', 'action' => 'index')),
-		array('name' => 'テーマスイッチ管理', 'url' => array('plugin' => 'theme_switch', 'controller' => 'theme_switch', 'action' => 'index'))
 	);
 
 /**
@@ -65,10 +64,12 @@ class ThemeSwitchController extends BcPluginAppController {
 	public function admin_index() {
 		$this->pageTitle = 'テーマスイッチ設定';
 		$themeSwitch = ThemeSwitch::createFromContext();
-		$this->set('csrfTokenKey', $this->Session->read('_Token.key'));
-		$this->set('currentThemes', $themeSwitch->themes);
-		$this->set('themeList', $themeSwitch->getAllThemeList());
-		$this->set('submitUrl', Router::url(array('plugin' => 'theme_switch', 'controller' => 'theme_switch', 'action' => 'admin_config')));
+		$this->set(array(
+			'csrfTokenKey' => $this->Session->read('_Token.key'),
+			'currentThemes' => $themeSwitch->themes,
+			'themeList' => $themeSwitch->getAllThemeList(),
+			'submitUrl' => Router::url(array('action' => 'admin_config'))
+		));
 	}
 
 /**
@@ -82,24 +83,19 @@ class ThemeSwitchController extends BcPluginAppController {
 		$this->autoRender = false;
 		$this->viewClass = 'json';
 
-		//Ajaxリクエストのみ
-		$this->request->onlyAllow('ajax');
-
-		//POSTリクエストのみ
-		if (!$this->request->is('post')) {
-			throw new HttpRequestMethodException();
-		}
-
-		//POSTされたJSONデータを配列で取得
-		$data = $this->request->data;
-
-		if (empty($data)) {
-			throw new HttpInvalidParamException();
+		//POSTかつAjaxかつデータが空でない事を確認
+		if (!$this->request->isAll(array('post', 'ajax'))
+			|| empty($this->request->data)) {
+			$this->response->statusCode(400);
+			return json_encode(array(
+				'success' => false,
+				'message' => '400 Invalid Request'
+			));
 		}
 
 		//バリデーション
-        $config = ThemeSwitchConfig::create();
-		$errors = $config->validator->validate($data);
+		$config = ThemeSwitchConfig::create();
+		$errors = $config->validator->validate($this->request->data);
 
 		//エラーがある場合
 		if (count($errors) > 0) {
@@ -111,7 +107,7 @@ class ThemeSwitchController extends BcPluginAppController {
 		}
 
 		//エラーのない場合
-		$config->save($data);
+		$config->save($this->request->data);
 
 		return json_encode(array(
 			'success' => true

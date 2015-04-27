@@ -24,45 +24,47 @@ class ThemeSwitchConfig {
  * バリデーター
  * @var ThemeSwitchConfigValidator
  */
-    public $validator = null;
+	public $validator = null;
 
 /**
  * デフォルトの設定
  * @var array
  */
-    protected $default = array(
-        'smartphone' => '',
-        'mobile' => ''
-    );
+	protected $default = array(
+		'smartphone' => '',
+		'mobile' => ''
+	);
 
 /**
- * ファクトリ
+ * ファクトリーメソッド
+ *
  * @return self
  */
-    public static function create() {
-        return new self(new ThemeSwitchConfigValidator(self::getAvailableThemes()));
-    }
+	public static function create() {
+		return new self(new ThemeSwitchConfigValidator(self::getAvailableThemes()));
+	}
 
 /**
  * 利用可能なテーマの配列を返す
  *
  * @return array
  */
-    public static function getAvailableThemes() {
-        $path = WWW_ROOT . 'theme';
-        $folder = new Folder($path);
-        $files = $folder->read(true, true);
-        return $files[0];
-    }
+	public static function getAvailableThemes() {
+		$path = WWW_ROOT . 'theme';
+		$folder = new Folder($path);
+		$files = $folder->read(true, true);
+		return $files[0];
+	}
 
 /**
  * コンストラクタ
+ *
  * @param ThemeSwitchConfigValidator $validator バリデーター
  */
-    public function __construct(ThemeSwitchConfigValidator $validator = null) {
-        $this->ensureFileExists();
-        $this->validator = $validator;
-    }
+	public function __construct(ThemeSwitchConfigValidator $validator = null) {
+		$this->ensureFileExists();
+		$this->validator = $validator;
+	}
 
 /**
  * 設定ファイルの有無をチェック
@@ -75,31 +77,34 @@ class ThemeSwitchConfig {
 
 /**
  * 設定ファイルがなければ作成
+ *
+ * @return void
  */
-    public function ensureFileExists() {
-        if($this->fileExists()) {
-            return;
-        }
-        $this->save($this->default);
-    }
+	public function ensureFileExists() {
+		if ($this->fileExists()) {
+			return;
+		}
+		$this->save($this->default);
+	}
 
 /**
  * 設定ファイルのパスを返す
+ *
  * @return string
  */
-    public function filePath() {
-        return APP . 'Plugin' . DS . 'ThemeSwitch' . DS . 'Config' . DS . 'themes.php';
-    }
+	public function filePath() {
+		return APP . 'Plugin' . DS . 'ThemeSwitch' . DS . 'Config' . DS . 'themes.php';
+	}
 
 /**
  * 設定を取得
  *
  * @return array
  */
-    public function read() {
-        $reader = new PhpReader(self::CONFIG_PATH);
-        return $reader->read(self::CONFIG_PATH);
-    }
+	public function read() {
+		$reader = new PhpReader(self::CONFIG_PATH);
+		return $reader->read(self::CONFIG_PATH);
+	}
 
 /**
  * 設定をファイルに保存

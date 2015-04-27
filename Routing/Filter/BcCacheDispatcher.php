@@ -37,6 +37,7 @@ class BcCacheDispatcher extends DispatcherFilter {
 	// ---
 	public $priority = 8;
 	// <<<
+
 /**
  * Checks whether the response was cached and set the body accordingly.
  *
@@ -44,7 +45,6 @@ class BcCacheDispatcher extends DispatcherFilter {
  * @return CakeResponse with cached content if found, null otherwise
  */
 	public function beforeDispatch(CakeEvent $event) {
-
 		if (Configure::read('Cache.check') !== true) {
 			return;
 		}

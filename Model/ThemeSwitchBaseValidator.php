@@ -34,6 +34,7 @@ class ThemeSwitchBaseValidator {
 
 /**
  * コンストラクタ
+ *
  * @param array $rules バリデーションルール
  * @param array $methods 追加で利用するバリデーションのメソッド名
  */

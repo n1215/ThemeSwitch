@@ -7,6 +7,7 @@
         $smartphone: $('#theme-switch-config-smartphone'),
         $mobile: $('#theme-switch-config-mobile'),
         $waiting: $('#Waiting'),
+        $dialog: $('#theme-switch-config-dialog'),
         $errors: {
             mobile: $('#error-message-mobile'),
             smartphone: $('#error-message-smartphone')
@@ -35,7 +36,16 @@
                 },
                 success: function (response, status) {
                     that.updateErrors();
-                    alert('保存しました。');
+                    that.$dialog.dialog({
+                        modal: true,
+                        title: 'テーマスイッチ',
+                        width: 320,
+                        buttons: {
+                            "OK": function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
                 },
                 error: function (request, status, error) {
                     var res = JSON.parse(request.responseText);
@@ -51,6 +61,9 @@
                 errors = {};
             }
             for (var key in this.$errors) {
+                if (!this.$errors.hasOwnProperty(key)) {
+                    continue;
+                }
                 if (errors.hasOwnProperty(key)) {
                     this.$errors[key].show().html(errors[key][0]);
                 } else {
@@ -58,7 +71,7 @@
                 }
             }
         }
-    }
+    };
 
     ThemeSwitch.init();
 });

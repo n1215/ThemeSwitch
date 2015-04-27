@@ -1,5 +1,5 @@
-/nbproject
+nbproject
 .DS_Store
 .idea
-.vagrant/*
+.vagrant
 Config/themes.php

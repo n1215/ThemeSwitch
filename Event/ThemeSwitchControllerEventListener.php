@@ -26,7 +26,7 @@ class ThemeSwitchControllerEventListener extends BcControllerEventListener {
 /**
  * beforeRender
  *
- * @param CakeEvent $event
+ * @param CakeEvent $event イベント
  * @return void
  */
 	public function beforeRender(CakeEvent $event) {

@@ -39,7 +39,7 @@ class ThemeSwitch {
  * @return self
  */
 	public static function createFromContext() {
-        $config = ThemeSwitchConfig::create();
+		$config = ThemeSwitchConfig::create();
 		return new self($config->read(), BcAgent::findCurrent());
 	}
 
@@ -68,12 +68,14 @@ class ThemeSwitch {
 	}
 /**
  * テーマのリストを取得
+ *
+ * @return array
  */
-    public function getAllThemeList() {
-        $availableThemes = ThemeSwitchConfig::getAvailableThemes();
-        $themeList = array_combine($availableThemes, $availableThemes);
-        return $themeList;
-    }
+	public function getAllThemeList() {
+		$availableThemes = ThemeSwitchConfig::getAvailableThemes();
+		return array_combine($availableThemes, $availableThemes);
+	}
+
 /**
  * キャッシュのファイル名の接尾辞を生成
  *

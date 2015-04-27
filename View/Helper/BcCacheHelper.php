@@ -45,7 +45,7 @@ class BcCacheHelper extends CacheHelper {
 		} else {
 			$cacheTime = strtotime($timestamp, $now);
 		}
-		
+
 		// CUSTOMIZE 2014/08/11 ryuring
 		// $this->request->here で、URLを取得する際、URL末尾の 「index」の有無に関わらず
 		// 同一ファイルを参照すべきだが、別々のURLを出力してしまう為、
