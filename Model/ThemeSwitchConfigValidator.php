@@ -1,6 +1,6 @@
 <?php
 /**
- * [ThemeSwitch]テーマスイッチ
+ * [ThemeSwitch]テーマスイッチ 設定のバリデーター
  *
  * @copyright Copyright 2015 - , n1215
  * @link       http://github.com/n1215
@@ -10,10 +10,47 @@
  * @license    MIT License
  */
 
-App::uses('CakeValidationSet', 'Model/Validator');
 App::uses('ThemeSwitch', 'ThemeSwitch.Model');
+App::uses('ThemeSwitchBaseValidator', 'ThemeSwitch.Model');
 
-class ThemeSwitchConfigValidator {
+class ThemeSwitchConfigValidator extends ThemeSwitchBaseValidator {
+
+/**
+ * バリデーションルール
+ * @var array
+ */
+	protected $rules = array(
+		'smartphone' => array(
+			array(
+				'rule' => 'notEmpty',
+				'message' => 'スマートフォン用のテーマを選択してください',
+				'required' => true
+			),
+			array(
+				'rule' => 'themeAvailable',
+				'message' => 'テーマが見つかりません',
+				'required' => true
+			)
+		),
+		'mobile' => array(
+			array(
+				'rule' => 'notEmpty',
+				'message' => 'モバイル用のテーマを選択してください',
+				'required' => true
+			),
+			array(
+				'rule' => 'themeAvailable',
+				'message' => 'テーマが見つかりません',
+				'required' => true
+			)
+		)
+	);
+
+/**
+ * 追加で利用するバリデーション用のメソッド
+ * @var array
+ */
+	protected $methods = array('themeAvailable');
 
 /**
  * 利用できるテーマ名の配列
@@ -22,97 +59,13 @@ class ThemeSwitchConfigValidator {
 	protected $themes = null;
 
 /**
- * バリデーションセット
- * @var CakeValidationSet[]
- */
-	protected $validationSets = array();
-
-/**
- * 現在のコンテクストから生成
- *
- * @return self
- */
-	public static function create() {
-		return new self(ThemeSwitch::getAvailableThemes());
-	}
-
-/**
  * コンストラクタ
  *
  * @param array $themes テーマ設定の配列
  */
 	public function __construct(array $themes) {
 		$this->themes = $themes;
-		$this->validationSets = $this->makeValidationSets();
-	}
-
-/**
- * バリデーションルールを生成
- *
- * @return array
- */
-	protected function getRules() {
-		return array(
-			'smartphone' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'スマートフォン用のテーマを選択してください',
-					'required' => true
-				),
-				array(
-
-					'rule' => 'themeAvailable',
-					'message' => 'テーマが見つかりません',
-					'required' => true
-				)
-			),
-			'mobile' => array(
-				array(
-					'rule' => 'notEmpty',
-					'message' => 'モバイル用のテーマを選択してください',
-					'required' => true
-				),
-				array(
-					'rule' => 'themeAvailable',
-					'message' => 'テーマが見つかりません',
-					'required' => true
-				)
-			)
-		);
-	}
-
-/**
- * CakeValidationSetの連想配列を生成
- *
- * @return CakeValidationSet[]
- */
-	protected function makeValidationSets() {
-		$sets = array();
-		foreach ($this->getRules() as $field => $rules) {
-			$set = new CakeValidationSet($field, $rules);
-			$methods = array('themeavailable' => array($this, 'themeAvailable'));
-			$set->setMethods($methods);
-			$sets[] = $set;
-		}
-		return $sets;
-	}
-
-/**
- * バリデーション実行
- *
- * @param array $data 対象データの配列
- * @return array $errors エラー
- */
-	public function validate($data) {
-		$errors = array();
-		foreach ($this->validationSets as $set) {
-			$error = $set->validate($data);
-			if (count($error) == 0) {
-				continue;
-			}
-			$errors[$set->field] = $set->validate($data);
-		}
-		return $errors;
+		parent::__construct();
 	}
 
 /**

@@ -11,25 +11,27 @@
  */
 
 App::uses('BcAgent', 'Lib');
+App::uses('ThemeSwitchConfig', 'ThemeSwitch.Model');
 
 class ThemeSwitch {
-
-/**
- * 設定ファイルのパス
- */
-	const CONFIG_PATH = 'ThemeSwitch.themes';
 
 /**
  * テーマ設定の配列
  * @var array
  */
-	public $themes;
+	public $themes = array();
 
 /**
  * ユーザーエージェント
  * @var BcAgent
  */
-	protected $agent;
+	protected $agent = null;
+
+/**
+ * 設定用クラス
+ * @var ThemeSwitchConfig
+ */
+	public $config = null;
 
 /**
  * 現在のコンテクストから生成
@@ -37,21 +39,7 @@ class ThemeSwitch {
  * @return self
  */
 	public static function createFromContext() {
-		$reader = new PhpReader(self::CONFIG_PATH);
-		$themes = $reader->read(self::CONFIG_PATH);
-		return new self($themes, BcAgent::findCurrent());
-	}
-
-/**
- * 利用可能なテーマの配列を返す
- *
- * @return array
- */
-	public static function getAvailableThemes() {
-		$path = WWW_ROOT . 'theme';
-		$folder = new Folder($path);
-		$files = $folder->read(true, true);
-		return $files[0];
+		return new self(null, BcAgent::findCurrent(), ThemeSwitchConfig::create());
 	}
 
 /**
@@ -59,10 +47,16 @@ class ThemeSwitch {
  *
  * @param array $themes テーマ設定の配列
  * @param BcAgent $agent ユーザーエージェント
+ * @param ThemeSwitchConfig $config テーマ設定
  */
-	public function __construct(array $themes, BcAgent $agent = null) {
-		$this->themes = $themes;
+	public function __construct(array $themes = null, BcAgent $agent = null, ThemeSwitchConfig $config = null) {
+		if($config !== null && $themes === null) {
+			$this->themes = $config->read();
+		} else {
+			$this->themes = $themes;
+		}
 		$this->agent = $agent;
+		$this->config = $config;
 	}
 
 /**
@@ -77,7 +71,14 @@ class ThemeSwitch {
 
 		return $this->themes[$this->agent->name];
 	}
-
+/**
+ * テーマのリストを取得
+ */
+    public function getAllThemeList() {
+        $availableThemes = ThemeSwitchConfig::getAvailableThemes();
+        $themeList = array_combine($availableThemes, $availableThemes);
+        return $themeList;
+    }
 /**
  * キャッシュのファイル名の接尾辞を生成
  *
@@ -88,21 +89,5 @@ class ThemeSwitch {
 			return '';
 		}
 		return '_theme_switch_' . $this->agent->name;
-	}
-
-/**
- * 設定をファイルに保存
- *
- * @param array $data 保存するデータ
- * @return void
- */
-	public function saveConfig($data) {
-		$reader = new PhpReader(self::CONFIG_PATH);
-
-		$config = array(
-			'smartphone' => $data['smartphone'],
-			'mobile' => $data['mobile']
-		);
-		$reader->dump(self::CONFIG_PATH, $config);
 	}
 }

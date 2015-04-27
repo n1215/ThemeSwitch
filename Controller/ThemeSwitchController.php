@@ -11,7 +11,7 @@
  */
 
 App::uses('ThemeSwitch', 'ThemeSwitch.Model');
-App::uses('ThemeSwitchConfigValidator', 'ThemeSwitch.Model');
+App::uses('ThemeSwitchConfig', 'ThemeSwitch.Model');
 
 class ThemeSwitchController extends BcPluginAppController {
 
@@ -51,11 +51,11 @@ class ThemeSwitchController extends BcPluginAppController {
  *
  * @return void
  */
-    public function beforeFilter() {
-        parent::beforeFilter();
-        $this->Security->csrfCheck = true;
-        $this->Security->csrfUseOnce = false;
-    }
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Security->csrfCheck = true;
+		$this->Security->csrfUseOnce = false;
+	}
 
 /**
  * [ADMIN] 管理画面
@@ -64,13 +64,11 @@ class ThemeSwitchController extends BcPluginAppController {
  */
 	public function admin_index() {
 		$this->pageTitle = 'テーマスイッチ設定';
-		$availableThemes = ThemeSwitch::getAvailableThemes();
-		$themeList = array_combine($availableThemes, $availableThemes);
 		$themeSwitch = ThemeSwitch::createFromContext();
-        $this->set('csrfTokenKey', $this->Session->read('_Token.key'));
+		$this->set('csrfTokenKey', $this->Session->read('_Token.key'));
 		$this->set('currentThemes', $themeSwitch->themes);
-		$this->set('themeList', $themeList);
-		$this->set('submitUrl', Router::url(array('plugin' => 'theme_switch', 'controller' => 'theme_switch', 'action' => 'admin_ajax_config')));
+		$this->set('themeList', $themeSwitch->getAllThemeList());
+		$this->set('submitUrl', Router::url(array('plugin' => 'theme_switch', 'controller' => 'theme_switch', 'action' => 'admin_config')));
 	}
 
 /**
@@ -80,7 +78,7 @@ class ThemeSwitchController extends BcPluginAppController {
  * @throws HttpRequestMethodException
  * @throws HttpInvalidParamException
  */
-	public function admin_ajax_config() {
+	public function admin_config() {
 		$this->autoRender = false;
 		$this->viewClass = 'json';
 
@@ -100,27 +98,24 @@ class ThemeSwitchController extends BcPluginAppController {
 		}
 
 		//バリデーション
-		$validator = ThemeSwitchConfigValidator::create();
-		$errors = $validator->validate($data);
+        $config = ThemeSwitchConfig::create();
+		$errors = $config->validator->validate($data);
 
 		//エラーがある場合
-		if (count($errors) !== 0) {
+		if (count($errors) > 0) {
 			$this->response->statusCode(400);
-			$jsonArray = array(
+			return json_encode(array(
 				'success' => false,
 				'errors' => $errors
-			);
-			return json_encode($jsonArray);
+			));
 		}
 
 		//エラーのない場合
-		$themeSwitch = ThemeSwitch::createFromContext();
-		$themeSwitch->saveConfig($data);
-		$jsonArray = array(
-			'success' => true
-		);
+		$config->save($data);
 
-		return json_encode($jsonArray);
+		return json_encode(array(
+			'success' => true
+		));
 	}
 
 }
